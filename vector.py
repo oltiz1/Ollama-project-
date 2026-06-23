@@ -1,10 +1,10 @@
 from langchain_ollama import OllamaEmbeddings
 from langchain_chroma import Chroma
 from langchain_core.documents import Document
-import os 
+import os
 import pandas as pd
 
-df = pd.read_csv("file.csv")
+df = pd.read_csv("food-prize-september-2023.csv")
 embeddings = OllamaEmbeddings(model="mxbai-embed-large")
 
 db_location = "./chroma_langchain_db"
@@ -16,8 +16,8 @@ if add_documents:
 
     for i, row in df.iterrows():
         document = Document(
-            page_content=row["Title"] + " " + row["Review"],
-            metadata={"rating": row["Rating"], "date":row["Date"]},
+            page_content=row["Product"] + " " + row["Review"],
+            metadata={"product": row["Product"]},
             id=str(i)
         )
 
@@ -26,13 +26,15 @@ if add_documents:
 
 vector_store = Chroma(
     collection_name="restaurant_reviews",
-    persist_directory="db_location",
+    persist_directory=db_location,
     embedding_function=embeddings
 )
 
 if add_documents:
     vector_store.add_documents(documents=documents, ids=ids)
+    vector_store.persist()
 
 retriever = vector_store.as_retriever(
     search_kwargs={"k": 5}
-    )        
+)
+        
