@@ -7,11 +7,11 @@ import pandas as pd
 df = pd.read_csv("file.csv")
 embeddings = OllamaEmbeddings(model="mxbai-embed-large")
 
-db_location - "./chroma_langchain_db"
+db_location = "./chroma_langchain_db"
 add_documents = not os.path.exists(db_location)
 
 if add_documents:
-    documentss = []
+    documents = []
     ids = []
 
     for i, row in df.iterrows():
@@ -21,13 +21,13 @@ if add_documents:
             id=str(i)
         )
 
-        ids.append(str(i)))
+        ids.append(str(i))
         documents.append(document)
 
 vector_store = Chroma(
     collection_name="restaurant_reviews",
-    persist_directory="db_location"
-    embeddings_function=embeddings
+    persist_directory="db_location",
+    embedding_function=embeddings
 )
 
 if add_documents:
