@@ -4,14 +4,23 @@ from vector import retriever
 
 model = OllamaLLM(model="llama3.2")
 
-template = """
+template1 = """
 You are an expert in answering questions about a pizza restaurant
 
 Here are some relevant reviews: {reviews}
 
 Here is the question to answer: {question}
 """
-prompt = ChatPromptTemplate.from_template(template)
+
+template2 = """
+You are an expert in answering questions about food prizes indexed over the years in New Zealand
+
+Here are some relevant reviews: {reviews}
+
+Here is the question to answer: {question}
+"""
+
+prompt = ChatPromptTemplate.from_template(template2)
 
 chain = prompt | model
 
